@@ -101,7 +101,7 @@ function handleTouchEnd(e) {
 .booking {
   width: 100vW;
   height: 100vh;
-  padding: 50px 100px;
+  padding: 30px;
 }
 
 .btnWrap {
