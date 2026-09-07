@@ -85,10 +85,10 @@ function handleTouchEnd(e) {
         <BookingComplete v-if="step === 6" :booking-data="bookingData" />
       </div>
     </Transition>
-    <div class="btnWrap">
+    <!-- <div class="btnWrap">
       <button :class="{ invisible: step === 1 || step === 6 }" @click="prevStep" class="prevBtn">이전</button>
       <button v-if="step < 6" @click="nextStep" class="nextBtn">다음</button>
-    </div>
+    </div> -->
 
   </div>
 </template>
