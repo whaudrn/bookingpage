@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import SelectShop from '../components/SelectShop.vue'
 import SelectService from '../components/SelectService.vue'
 import SelectDesigner from '../components/SelectDesigner.vue'
@@ -9,6 +9,7 @@ import BookingComplete from '../components/BookingComplete.vue'
 import StepProgress from '../components/StepProgress.vue'
 
 const step = ref(1)
+const isTransitioning = ref(false)
 
 const bookingData = ref({
   shop: null,
@@ -65,6 +66,25 @@ function handleTouchEnd(e) {
   }
 }
 
+
+const isBookingComplete = computed(() => {
+  return (
+    bookingData.value.shop &&
+    bookingData.value.service?.service &&
+    bookingData.value.designer &&
+    bookingData.value.date &&
+    bookingData.value.time &&
+    bookingData.value.name &&
+    bookingData.value.email
+  )
+})
+
+function submitBooking() {
+  // 나중에 여기서 실제 API 호출 (예: fetch('/api/bookings', { method: 'POST', body: ... }))
+  console.log('제출된 예약 데이터:', bookingData.value)
+  transitionName.value = 'slide-next'
+  step.value = 6
+}
 </script>
 
 <template>
@@ -75,21 +95,22 @@ function handleTouchEnd(e) {
 
     <StepProgress :step="step" :booking-data="bookingData" @go-to-step="(n) => step = n" />
 
-    <Transition :name="transitionName">
-      <div :key="step">
-        <SelectShop v-if="step === 1" v-model="bookingData.shop" />
-        <SelectService v-if="step === 2" v-model="bookingData.service" />
-        <SelectDesigner v-if="step === 3" v-model="bookingData.designer" />
-        <SelectDate v-if="step === 4" v-model:date="bookingData.date" v-model:time="bookingData.time" />
-        <EnterInfo v-if="step === 5" v-model:name="bookingData.name" v-model:email="bookingData.email" />
-        <BookingComplete v-if="step === 6" :booking-data="bookingData" />
-      </div>
-    </Transition>
-    <!-- <div class="btnWrap">
-      <button :class="{ invisible: step === 1 || step === 6 }" @click="prevStep" class="prevBtn">이전</button>
-      <button v-if="step < 6" @click="nextStep" class="nextBtn">다음</button>
-    </div> -->
+    <div class="slide-container">
+      <Transition :name="transitionName">
+        <div :key="step" class="slide-content">
+          <SelectShop v-if="step === 1" v-model="bookingData.shop" />
+          <SelectService v-if="step === 2" v-model="bookingData.service" />
+          <SelectDesigner v-if="step === 3" v-model="bookingData.designer" />
+          <SelectDate v-if="step === 4" v-model:date="bookingData.date" v-model:time="bookingData.time" />
+          <EnterInfo v-if="step === 5" v-model:name="bookingData.name" v-model:email="bookingData.email" />
+          <BookingComplete v-if="step === 6" :booking-data="bookingData" />
+        </div>
+      </Transition>
+    </div>
 
+    <div class="btnWrap">
+      <button v-if="isBookingComplete" v-show="!isTransitioning" @click="submitBooking" class="submitBtn">예약 하기</button>
+    </div>
   </div>
 </template>
 
@@ -107,7 +128,7 @@ function handleTouchEnd(e) {
 .btnWrap {
   margin-top: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 
 }
 
@@ -166,6 +187,19 @@ function handleTouchEnd(e) {
   color: #333;
 }
 
+.slide-container {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+  /* 실제 컨텐츠 최대 높이 보고 조절 */
+}
+
+.slide-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
 
 .slide-next-enter-active,
 .slide-next-leave-active,

@@ -45,8 +45,8 @@ function goToStep(index) {
       :class="{ done: isDone(s.key), active: step === index + 1 }">
       <span class="circle" @click="goToStep(index)">Step{{ index + 1 }}</span>
       <span class="label">
-        {{ s.label }}
-        <span v-if="isDone(s.key)">: {{ displayValue(s.key) }}</span>
+        {{ isDone(s.key) ? '' : s.label }}
+        <span v-if="isDone(s.key)">{{ displayValue(s.key) }}</span>
       </span>
     </div>
   </div>
