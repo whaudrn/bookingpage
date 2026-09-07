@@ -35,10 +35,32 @@ function prevStep() {
   step.value--
   console.log(bookingData.value);
 }
+
+
+let touchStartX = 0
+let touchEndX = 0
+
+function handleTouchStart(e) {
+  touchStartX = e.changedTouches[0].screenX
+}
+
+function handleTouchEnd(e) {
+  touchEndX = e.changedTouches[0].screenX
+  const diff = touchStartX - touchEndX
+
+  if (Math.abs(diff) < 50) return // 너무 짧은 움직임은 무시
+
+  if (diff > 0 && step.value < 6) {
+    nextStep()
+  } else if (diff < 0 && step.value > 1) {
+    prevStep()
+  }
+}
+
 </script>
 
 <template>
-  <div class="booking">
+  <div class="booking" @touchstart="handleTouchStart" @touchend="handleTouchEnd">
     <RouterLink to="/">
       <button>메인으로</button>
     </RouterLink>
