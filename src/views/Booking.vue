@@ -26,14 +26,16 @@ const bookingData = ref({
   email: ''
 })
 
+const transitionName = ref('slide-next')
+
 function nextStep() {
+  transitionName.value = 'slide-next'
   step.value++
-  console.log(bookingData.value);
 }
 
 function prevStep() {
+  transitionName.value = 'slide-prev'
   step.value--
-  console.log(bookingData.value);
 }
 
 
@@ -50,9 +52,11 @@ function handleTouchEnd(e) {
 
   if (Math.abs(diff) < 50) return // 너무 짧은 움직임은 무시
 
-  if (diff > 0 && step.value < 6) {
+  if (diffX > 0 && step.value < 6) {
+    transitionName.value = 'slide-next'
     nextStep()
-  } else if (diff < 0 && step.value > 1) {
+  } else if (diffX < 0 && step.value > 1) {
+    transitionName.value = 'slide-prev'
     prevStep()
   }
 }
@@ -67,12 +71,16 @@ function handleTouchEnd(e) {
 
     <StepProgress :step="step" :booking-data="bookingData" @go-to-step="(n) => step = n" />
 
-    <SelectShop v-if="step === 1" v-model="bookingData.shop" />
-    <SelectService v-if="step === 2" v-model="bookingData.service" />
-    <SelectDesigner v-if="step === 3" v-model="bookingData.designer" />
-    <SelectDate v-if="step === 4" v-model:date="bookingData.date" v-model:time="bookingData.time" />
-    <EnterInfo v-if="step === 5" v-model:name="bookingData.name" v-model:email="bookingData.email" />
-    <BookingComplete v-if="step === 6" :booking-data="bookingData" />
+    <Transition :name="transitionName">
+      <div :key="step">
+        <SelectShop v-if="step === 1" v-model="bookingData.shop" />
+        <SelectService v-if="step === 2" v-model="bookingData.service" />
+        <SelectDesigner v-if="step === 3" v-model="bookingData.designer" />
+        <SelectDate v-if="step === 4" v-model:date="bookingData.date" v-model:time="bookingData.time" />
+        <EnterInfo v-if="step === 5" v-model:name="bookingData.name" v-model:email="bookingData.email" />
+        <BookingComplete v-if="step === 6" :booking-data="bookingData" />
+      </div>
+    </Transition>
 
     <div class="btnWrap">
       <button :class="{ invisible: step === 1 || step === 6 }" @click="prevStep" class="prevBtn">이전</button>
@@ -93,14 +101,14 @@ function handleTouchEnd(e) {
 }
 
 .btnWrap {
-margin-top: 20px;
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
 
 }
 
 .btnWrap button {
-  
+
   padding: 5px 10px;
   font-size: 30px;
   background-color: #2196f3;
@@ -152,5 +160,35 @@ margin-top: 20px;
 .progress-step.done,
 .progress-step.active {
   color: #333;
+}
+
+
+.slide-next-enter-active,
+.slide-next-leave-active,
+.slide-prev-enter-active,
+.slide-prev-leave-active {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  position: absolute;
+  width: 100%;
+}
+
+.slide-next-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-next-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-prev-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-prev-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
 }
 </style>
