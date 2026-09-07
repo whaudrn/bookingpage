@@ -190,7 +190,7 @@ function submitBooking() {
 .slide-container {
   position: relative;
   overflow: hidden;
-  min-height: 500px;
+  min-height: 400px;
   /* 실제 컨텐츠 최대 높이 보고 조절 */
 }
 
