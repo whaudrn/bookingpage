@@ -40,17 +40,21 @@ function prevStep() {
 
 
 let touchStartX = 0
-let touchEndX = 0
+let touchStartY = 0
 
 function handleTouchStart(e) {
   touchStartX = e.changedTouches[0].screenX
+  touchStartY = e.changedTouches[0].screenY
 }
 
 function handleTouchEnd(e) {
-  touchEndX = e.changedTouches[0].screenX
-  const diff = touchStartX - touchEndX
+  const touchEndX = e.changedTouches[0].screenX
+  const touchEndY = e.changedTouches[0].screenY
+  const diffX = touchStartX - touchEndX
+  const diffY = touchStartY - touchEndY
 
-  if (Math.abs(diff) < 50) return // 너무 짧은 움직임은 무시
+  if (Math.abs(diffX) < 50) return
+  if (Math.abs(diffX) < Math.abs(diffY)) return
 
   if (diffX > 0 && step.value < 6) {
     transitionName.value = 'slide-next'
@@ -81,11 +85,11 @@ function handleTouchEnd(e) {
         <BookingComplete v-if="step === 6" :booking-data="bookingData" />
       </div>
     </Transition>
-
     <div class="btnWrap">
       <button :class="{ invisible: step === 1 || step === 6 }" @click="prevStep" class="prevBtn">이전</button>
       <button v-if="step < 6" @click="nextStep" class="nextBtn">다음</button>
     </div>
+
   </div>
 </template>
 
