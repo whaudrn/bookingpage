@@ -71,15 +71,18 @@ function prevStep() {
 }
 
 .btnWrap {
-
+margin-top: 20px;
   display: flex;
   justify-content: space-between;
 
 }
 
 .btnWrap button {
+  
+  padding: 5px 10px;
   font-size: 30px;
   background-color: #2196f3;
+  border-radius: 10px;
   color: #fff;
 }
 

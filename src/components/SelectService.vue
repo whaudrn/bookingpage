@@ -113,6 +113,11 @@ const currentServices = computed(() => {
 </template>
 
 <style scoped>
+h2 {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 20px;
+}
 .select-service {
   display: flex;
   flex-direction: column;
