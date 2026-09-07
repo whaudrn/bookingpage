@@ -1,0 +1,96 @@
+@charset "utf-8";
+
+.calendar {
+  width: 100%;
+  max-width: 500px;
+  margin: 30px auto;
+}
+
+.calendar__weekdays,
+.calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-size: 20px;
+  gap: 5px;
+}
+
+.calendar__weekdays {
+  margin-bottom: 10px;
+}
+
+.calendar__days {
+  margin-bottom: 20px;
+}
+
+.calendar__days button {
+  font-size: 20px;
+  padding: 5px 10px;
+  background-color: rgb(224, 231, 229);
+}
+
+.calendar__days button:hover {
+  background-color: aquamarine;
+}
+
+.calendar__days button.is-selected {
+  background-color: aquamarine;
+}
+
+.calendar__weekdays span {
+  display: block;
+  text-align: center;
+  border: 1px solid;
+}
+
+.calendar__weekdays span:first-child {
+  color: #ff0000;
+}
+
+.calendar__slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 30px;
+}
+
+.calendar__header button {
+  font-size: 30px;
+  border: 1px solid;
+}
+
+.calendar__header>span#monthLabel {
+  font-size: 30px;
+}
+
+.calendar__slot-grid button {
+  background-color: beige;
+  font-size: 20px;
+  padding: 5px 10px;
+}
+
+.calendar__slot-grid button:hover {
+  background-color: bisque;
+}
+
+.calendar__slot-grid button.is-selected {
+  background-color: bisque;
+}
+
+.currentBooking {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.today {
+  border: 1px solid red;
+}
